@@ -1,0 +1,9 @@
+name = "cruart"
+uuid = "6b2f9471-35ae-4e2e-96b0-d3c5dc6e067e"
+authors = ["Joseph Peralta <joe@crimsonhexagon.us>"]
+version = "0.1.0"
+
+[deps]
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+Gumbo = "708ec375-b3d6-5a57-a7ce-8257bf98657a"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
