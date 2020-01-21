@@ -1,5 +1,5 @@
 module cruart
-using Gumbo, CSV, FileWatching
+using Gumbo, CSV, FileWatching, DataFrames
 
 const data_pfx = "data"
 const data_fdr = data_pfx * "/"
@@ -41,8 +41,9 @@ function main(filename)
             end
         end
     end
+    results_df = DataFrame(results)
     outfile = filename[match(r"\/",filename).offset+1:match(r"\.",filename).offset-1]
-    CSV.write(outfile * ".csv",results)
+    CSV.write(outfile * ".csv",results_df)
 end
 
 function parse_minutes(hours_text)
