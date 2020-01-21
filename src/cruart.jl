@@ -1,5 +1,5 @@
 module cruart
-using Gumbo, CSV, FileWatching, DataFrames
+using Gumbo, CSV, FileWatching, DataFrames, Lazy
 
 const data_pfx = "data"
 const data_fdr = data_pfx * "/"
@@ -40,7 +40,13 @@ function main(filename)
         end
     end
 
-    group_df = rename(aggregate(groupby(results_df, [:trainee, :training_date]), sum),(:minutes_sum => :minutes))
+    group_df = @> begin
+        results_df
+        DataFrames.groupby([:trainee, :training_date])
+        aggregate(sum)
+        rename((:minutes_sum => :minutes))
+    end
+
     outfile = filename[match(r"\/",filename).offset+1:match(r"\.",filename).offset-1]
     CSV.write(outfile * ".csv",group_df)
 end
