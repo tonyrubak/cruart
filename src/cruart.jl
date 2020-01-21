@@ -26,6 +26,7 @@ function main(filename)
     end
     pages = length(html_data.root.children[2].children)
     results = Dict{String,Int}()
+    results_df = DataFrame(trainee = String[], minutes = Int[], training_date = String[])
 
     for page in 1:pages
         for row in html_data.root.children[2].children[page].children[1].children
@@ -33,17 +34,15 @@ function main(filename)
                 trainee = row.children[4].children[1].children[1].text
                 trainee = trainee[length(trainee)-1:length(trainee)]
                 minutes = parse_minutes(row.children[10].children[1].children[1].text)
-                if trainee in keys(results)
-                    results[trainee] = results[trainee] + minutes
-                else
-                    results[trainee] = minutes
-                end
+                date = row.children[7].children[1].children[1].text
+                push!(results_df, (trainee, minutes, date))
             end
         end
     end
-    results_df = DataFrame(results)
+
+    group_df = rename(aggregate(groupby(results_df, [:trainee, :training_date]), sum),(:minutes_sum => :minutes))
     outfile = filename[match(r"\/",filename).offset+1:match(r"\.",filename).offset-1]
-    CSV.write(outfile * ".csv",results_df)
+    CSV.write(outfile * ".csv",group_df)
 end
 
 function parse_minutes(hours_text)
