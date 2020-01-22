@@ -5,7 +5,7 @@ const data_pfx = "data"
 const data_fdr = data_pfx * "/"
 
 function run()
-    unwatch_folder("data")
+    unwatch_folder(data_pfx)
     while true
         new_file = watch_folder(data_pfx)[1]
         if isfile(data_fdr * new_file)
@@ -25,7 +25,7 @@ function main(filename)
         return
     end
     pages = length(html_data.root.children[2].children)
-    results = Dict{String,Int}()
+
     results_df = DataFrame(trainee = String[], minutes = Int[], training_date = String[])
 
     for page in 1:pages
