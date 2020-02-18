@@ -26,7 +26,7 @@ function main(filename)
     end
     pages = length(html_data.root.children[2].children)
 
-    results_df = DataFrame(trainee = String[], minutes = Int[], training_date = String[])
+    results_df = DataFrame(trainee = String[], minutes = Int[], training_date = String[], training_pos = String[])
 
     for page in 1:pages
         for row in html_data.root.children[2].children[page].children[1].children
@@ -35,14 +35,15 @@ function main(filename)
                 trainee = trainee[length(trainee)-1:length(trainee)]
                 minutes = parse_minutes(row.children[10].children[1].children[1].text)
                 date = row.children[7].children[1].children[1].text
-                push!(results_df, (trainee, minutes, date))
+                pos = row.children[5].children[1].children[1].text
+                push!(results_df, (trainee, minutes, date, pos))
             end
         end
     end
 
     group_df = @> begin
         results_df
-        DataFrames.groupby([:trainee, :training_date])
+        DataFrames.groupby([:trainee, :training_date, :training_pos])
         aggregate(sum)
         rename((:minutes_sum => :minutes))
     end
