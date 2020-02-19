@@ -36,7 +36,11 @@ function main(filename)
                 minutes = parse_minutes(row.children[10].children[1].children[1].text)
                 date = row.children[7].children[1].children[1].text
                 pos = row.children[5].children[1].children[1].text
-                push!(results_df, (trainee, minutes, date, pos))
+                if pos == "RCIC" || pos == "CICA"
+                    continue
+                else
+                    push!(results_df, (trainee, minutes, date, pos))
+                end
             end
         end
     end
