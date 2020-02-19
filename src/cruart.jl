@@ -53,7 +53,14 @@ function main(filename)
     end
 
     outfile = filename[match(r"\/",filename).offset+1:match(r"\.",filename).offset-1]
-    CSV.write(outfile * ".csv",group_df)
+    try
+        CSV.write(outfile * ".csv",group_df)
+        println("Successfully wrote " * outfile * ".csv")
+    catch ex
+        println("Failed to write " * outfile * ".csv")
+        println(ex)
+        nothing
+    end
 end
 
 function parse_minutes(hours_text)
