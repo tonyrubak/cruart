@@ -1,5 +1,5 @@
 module cruart
-using Gumbo, CSV, FileWatching, DataFrames, Lazy
+using Gumbo, CSV, FileWatching, DataFrames, Lazy, TimeZones, Dates
 
 const data_pfx = "data"
 const data_fdr = data_pfx * "/"
@@ -14,7 +14,19 @@ function run()
     end
 end
 
+function parse_cruart_date(str)
+    r = r"/"
+    m = match(r,str)
+    month = parse(Int,str[1:m.offset-1])
+    m2 = match(r,str,m.offset+1)
+    day = parse(Int,str[m.offset+1:m2.offset-1])
+    year = parse(Int,str[length(str)-3:length(str)])
+    (year, month, day)
+end
+
 function main(filename)
+    tz = TimeZone("America/Detroit")
+    utc = TimeZone("UTC")
     html_data = try
         parsehtml(read(filename, String))
     catch ex
@@ -35,11 +47,17 @@ function main(filename)
                 trainee = trainee[length(trainee)-1:length(trainee)]
                 minutes = parse_minutes(row.children[10].children[1].children[1].text)
                 date = row.children[7].children[1].children[1].text
+                time = row.children[8].children[1].children[1].text
+                dt = ZonedDateTime(parse_cruart_date(date)...,
+                                   parse(Int,time[1:2]),
+                                   parse(Int,time[4:5]),
+                                   utc)
+                local_dt = Dates.format(astimezone(dt,tz), "mm/dd/yyyy")
                 pos = row.children[5].children[1].children[1].text
                 if pos == "RCIC" || pos == "CICA"
                     continue
                 else
-                    push!(results_df, (trainee, minutes, date, pos))
+                    push!(results_df, (trainee, minutes, local_dt, pos))
                 end
             end
         end
