@@ -6,6 +6,7 @@ const data_fdr = data_pfx * "/"
 
 function run()
     unwatch_folder(data_pfx)
+    println("Waiting for data...")
     while true
         new_file = watch_folder(data_pfx)[1]
         if isfile(data_fdr * new_file)
