@@ -53,7 +53,7 @@ function main(filename)
                                    parse(Int,time[1:2]),
                                    parse(Int,time[4:5]),
                                    utc)
-                local_dt = Dates.format(astimezone(dt,tz), "mm/dd/yyyy")
+                local_dt = Dates.format(astimezone(dt,tz), "mm/dd/yyyy HH:MM")
                 pos = row.children[5].children[1].children[1].text
                 if pos == "RCIC" || pos == "CICA"
                     continue
