@@ -64,16 +64,9 @@ function main(filename)
         end
     end
 
-    group_df = @> begin
-        results_df
-        DataFrames.groupby([:trainee, :training_date, :training_pos])
-        aggregate(sum)
-        rename((:minutes_sum => :minutes))
-    end
-
     outfile = filename[match(r"\/",filename).offset+1:match(r"\.",filename).offset-1]
     try
-        CSV.write(outfile * ".csv",group_df)
+        CSV.write(outfile * ".csv",results_df)
         println("Successfully wrote " * outfile * ".csv")
     catch ex
         println("Failed to write " * outfile * ".csv")
