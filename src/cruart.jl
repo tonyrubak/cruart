@@ -27,7 +27,6 @@ end
 
 function main(filename)
     tz = TimeZone("America/Detroit")
-    utc = TimeZone("UTC")
     html_data = try
         parsehtml(read(filename, String))
     catch ex
@@ -52,7 +51,7 @@ function main(filename)
                 dt = ZonedDateTime(parse_cruart_date(date)...,
                                    parse(Int,time[1:2]),
                                    parse(Int,time[4:5]),
-                                   utc)
+                                   TimeZone("UTC"))
                 local_dt = Dates.format(astimezone(dt,tz), "mm/dd/yyyy HH:MM")
                 pos = row.children[5].children[1].children[1].text
                 ojti = row.children[3].children[1].children[1].text
