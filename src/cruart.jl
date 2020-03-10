@@ -39,7 +39,7 @@ function main(filename)
     end
     pages = length(html_data.root.children[2].children)
 
-    results_df = DataFrame(trainee = String[], minutes = Int[], training_date = String[], training_pos = String[])
+    results_df = DataFrame(trainee = String[], minutes = Int[], training_date = String[], training_pos = String[], ojti = String[])
 
     for page in 1:pages
         for row in html_data.root.children[2].children[page].children[1].children
@@ -55,10 +55,12 @@ function main(filename)
                                    utc)
                 local_dt = Dates.format(astimezone(dt,tz), "mm/dd/yyyy HH:MM")
                 pos = row.children[5].children[1].children[1].text
+                ojti = row.children[3].children[1].children[1].text
+                ojti = ojti[length(ojti)-1:length(ojti)]
                 if pos == "RCIC" || pos == "CICA"
                     continue
                 else
-                    push!(results_df, (trainee, minutes, local_dt, pos))
+                    push!(results_df, (trainee, minutes, local_dt, pos, ojti))
                 end
             end
         end
