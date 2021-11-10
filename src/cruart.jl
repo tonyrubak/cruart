@@ -1,5 +1,5 @@
 module cruart
-using Gumbo, CSV, FileWatching, DataFrames, Lazy, TimeZones, Dates
+using Gumbo, CSV, FileWatching, DataFrames, TimeZones, Dates
 
 const data_pfx = "data"
 const data_fdr = data_pfx * "/"
@@ -89,5 +89,5 @@ function is_training_row(row)
         row.children[6].children[1].children[1].text == "T"
 end
 
-run()
+# run()
 end # module
