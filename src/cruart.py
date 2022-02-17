@@ -45,7 +45,7 @@ def main(filename):
                 dt = datetime(*date, int(time[0:1]), int(time[3:4]), tzinfo=timezone.utc)
                 local_dt = dt.astimezone(tz).strftime("%m/%d/%Y %H:%M")
                 pos = cols[4].font.string
-                ojti = cols[2].font.string[-1:]
+                ojti = cols[2].font.string[-2:]
                 if pos == "RCIC" or pos == "CICA":
                     continue
                 df = pd.DataFrame([[trainee,minutes,local_dt,pos,ojti]], columns=columns)
