@@ -42,7 +42,7 @@ def main(filename):
                 minutes = parse_minutes(cols[9].font.string)
                 date = parse_cruart_date(cols[6].font.string)
                 time = cols[7].font.string
-                dt = datetime(*date, int(time[0:1]), int(time[3:4]), tzinfo=timezone.utc)
+                dt = datetime(*date, int(time[0:2]), int(time[3:5]), tzinfo=timezone.utc)
                 local_dt = dt.astimezone(tz).strftime("%m/%d/%Y %H:%M")
                 pos = cols[4].font.string
                 ojti = cols[2].font.string[-2:]
