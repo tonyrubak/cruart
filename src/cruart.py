@@ -49,7 +49,7 @@ def main(filename):
                 if pos == "RCIC" or pos == "CICA":
                     continue
                 df = pd.DataFrame([[trainee,minutes,local_dt,pos,ojti]], columns=columns)
-                results = results.append(df, ignore_index=True)
+                results = pd.concat([results,df],ignore_index=True)
     outfile = re.compile("(.*)\.htm").match(filename).group(1) + ".csv"
     results.to_csv(outfile, index=False)
 
