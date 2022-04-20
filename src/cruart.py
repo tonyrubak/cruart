@@ -24,7 +24,7 @@ def parse_cruart_date(text):
     
 
 def main(filename):
-    columns=["trainee", "minutes", "training_date", "training_pos", "ojti"]
+    columns=["trainee", "minutes", "training_date", "training_pos", "ojti", "t_date"]
     results = pd.DataFrame(columns = columns)
     
     tz = ZoneInfo("America/Detroit")
@@ -48,7 +48,8 @@ def main(filename):
                 ojti = cols[2].font.string[-2:]
                 if pos == "RCIC" or pos == "CICA":
                     continue
-                df = pd.DataFrame([[trainee,minutes,local_dt,pos,ojti]], columns=columns)
+                t_date = dt.strftime("%Y%m%d")
+                df = pd.DataFrame([[trainee,minutes,local_dt,pos,ojti,t_date]], columns=columns)
                 results = pd.concat([results,df],ignore_index=True)
     outfile = re.compile("(.*)\.htm").match(filename).group(1) + ".csv"
     results.to_csv(outfile, index=False)
